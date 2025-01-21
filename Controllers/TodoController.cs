@@ -82,5 +82,28 @@ namespace TodoApi.Controllers
 
             return Ok(todo);
         }
+
+        [HttpGet]
+        [Route("/SearchById")]
+        public async Task<IActionResult> SearchById(int id)
+        {
+            var tododb = await _todoContext.Todos.FindAsync(id);
+           
+            return Ok(tododb);
+        }
+
+        [HttpGet]
+        [Route("/SearchByTitle")]
+        public async Task<IActionResult> SearchByTitle(string title)
+        {
+            var todo = from t in _todoContext.Todos
+                select t;
+            if(!String.IsNullOrEmpty(title))
+            {
+                todo = todo.Where(t => t.Title.Contains(title));
+            }
+           
+            return Ok(todo);
+        }
     }
 }
